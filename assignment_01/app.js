@@ -2,10 +2,10 @@
 
 // TODO: Add group names and exercise number here
 function getTutorialInfo() {
-    return {
-        exerciseNum: 1,
-        groupNames: "Jane Doe, Max Mustermann",
-    };
+  return {
+    exerciseNum: 1,
+    groupNames: "Jane Doe, Max Mustermann",
+  };
 }
 
 // Array that stores the rectangle instances used to draw the bar chart
@@ -20,18 +20,39 @@ let BARS = [];
  * @param {Array} data - Array of numbers
  */
 function drawStatic(two, data) {
-    let posX = 155;
-    const posY = 400;
-    const barGap = 5;
+  // posX and posY are the coordinates of the first bar
+  let posX = 155;
+  const posY = 400;
+  // Gap between bars (default: 5)
+  const barGap = 5;
+  // Scale to amplify the values (default: 1)
+  const scale = 3;
+  // Width of the chart (default: 400)
+  const chartWidth = 400;
+  const barWidth = (chartWidth - (data.length - 1) * barGap) / data.length;
 
-    // TODO: insert code here
-    //       replace this code with your own
-    const rect = two.makeRectangle(two.width / 2, posY, 100, 100)
-    rect.fill = "lime";
-    rect.stroke = "darkgreen";
-    rect.linewidth = 3;
-    two.update(); // also remove this - you don't need to do this yourself for this exercise
+  for (let i = 0; i < data.length; i++) {
+    const barHeight = data[i] * scale;
+    const x = posX + i * (barWidth + barGap);
+    const y = posY - barHeight / 2;
+
+    const bar = two.makeRectangle(x, y, barWidth, barHeight);
+
+    bar.fill = 'blue';
+
+    two.add(bar);
+  }
+
+  two.update();
 }
+
+// Things to improve
+// References to what's being measured in data
+// Hover on bars and show value and more info
+// Add title to chart
+// Add axis labels
+// Add legend
+// Add lines over the chart to limit the chart
 
 /**
  * Draws the objects in the data array as a bar chart and fills the *BARS*
@@ -47,12 +68,45 @@ function drawStatic(two, data) {
  * @param {Array} data - Array of arrays of objects
  */
 function drawStaticStacked(two, data) {
+  // posX and posY are the coordinates of the first bar
+  let posX = 155;
+  const posY = 400;
+  // Gap between bars (default: 5)
+  const barGap = 5;
+  // Scale to amplify the values (default: 1)
+  const scale = 3;
+  // Width of the chart (default: 400)
+  const chartWidth = 400;
+  const barWidth = (chartWidth - (data.length - 1) * barGap) / data.length;
+  // TODO: insert code here
 
-    let posX = 155;
-    const posY = 400;
-    const barGap = 5;
+  for (let i = 0; i < data.length; i++) {
+    // now the object is an array of 4 object (each object with a category and a value)
+    // each object (array of 4 elements) represents a bar
+    // the color of each object is determined by the category (getColor())
 
-    // TODO: insert code here
+    // the height of each bar is the sum of the values of the 4 objects
+    // now the code
+    const x = posX + i * (barWidth + barGap);
+    let y = posY;
+    console.log('en i = ' + i )
+    for (let j = 0; j < data[i].length; j++) {
+      console.log(data[i][j])
+      const barHeight = data[i][j].value * scale;
+      let yOffset = barHeight / 2;
+      y += yOffset;
+      console.log('aca el y es ' + y)
+      const bar = two.makeRectangle(x, y, barWidth, barHeight);
+
+      bar.fill = getColor(data[i][j].category);
+
+      two.add(bar);
+    }
+
+    
+  }
+
+  console.log(data)
 }
 
 //-----------------------------------------------------------------------------
@@ -71,11 +125,11 @@ function drawStaticStacked(two, data) {
  */
 function drawSorting(data, changes, highlights) {
 
-    let posX = 155;
-    const posY = 400;
-    const barGap = 5;
+  let posX = 155;
+  const posY = 400;
+  const barGap = 5;
 
-    // BONUS: insert code here
+  // BONUS: insert code here
 }
 
 /**
@@ -97,9 +151,9 @@ function drawSorting(data, changes, highlights) {
  */
 function drawSortingStacked(data, changes, highlights) {
 
-    let posX = 155;
-    const posY = 400;
-    const barGap = 5;
+  let posX = 155;
+  const posY = 400;
+  const barGap = 5;
 
-    // BONUS: insert code here
+  // BONUS: insert code here
 }
