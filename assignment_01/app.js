@@ -36,6 +36,7 @@ function drawStatic(two, data) {
 
     let bar = two.makeRectangle(x, y, barWidth, barHeight);
 
+    bar.stroke = 'null';
     bar.fill = 'blue';
 
     BARS.push(bar);
@@ -86,6 +87,7 @@ function drawStaticStacked(two, data) {
 
       y -= yOffset;
 
+      bar.stroke = 'null';
       bar.fill = getColor(data[i][j].category);
       subBars.push(bar);
 
@@ -183,9 +185,10 @@ function drawSortingStacked(data, changes, highlights) {
       const bar = BARS[i][j];
 
       if (changes.includes(i)) {
-        bar.fill = 'red';
+        bar.stroke = 'black';
       } else {
         bar.fill = getColor(data[i][j].category);
+        bar.stroke = 'null';
       }
 
       if (!highlights.includes(i) && (changes.length !== 0 || highlights.length !== 0)) {
