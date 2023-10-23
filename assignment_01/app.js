@@ -1,6 +1,5 @@
 "use strict";
 
-// TODO: Add group names and exercise number here
 function getTutorialInfo() {
   return {
     exerciseNum: 1,
@@ -44,7 +43,6 @@ function drawStatic(two, data) {
     two.add(bar);
   }
 
-
   two.update();
 }
 
@@ -76,6 +74,7 @@ function drawStaticStacked(two, data) {
   for (let i = 0; i < data.length; i++) {
     const x = posX + i * (barWidth + barGap);
     let y = posY;
+    let subBars = []
 
     for (let j = 0; j < data[i].length; j++) {
       const barHeight = yScale(data[i][j].value);
@@ -88,13 +87,15 @@ function drawStaticStacked(two, data) {
       y -= yOffset;
 
       bar.fill = getColor(data[i][j].category);
+      subBars.push(bar);
 
       two.add(bar);
     }
 
-
+    BARS.push(subBars);
   }
 
+  two.update();
 }
 
 //-----------------------------------------------------------------------------
@@ -131,14 +132,13 @@ function drawSorting(data, changes, highlights) {
       bar.fill = 'blue';
     }
 
-    if (!highlights.includes(i)) {
+    if (!highlights.includes(i) && (changes.length !== 0 || highlights.length !== 0)) {
       bar.opacity = 0.25;
     } else {
       bar.opacity = 1;
     }
 
     bar.height = barHeight;
-    // bar.y = 0
     bar.translation.set(x, y);
   }
 
@@ -167,6 +167,37 @@ function drawSortingStacked(data, changes, highlights) {
   let posX = 155;
   const posY = 400;
   const barGap = 5;
+  const chartWidth = 400;
+  const barWidth = (chartWidth - (data.length - 1) * barGap) / data.length;
 
-  // BONUS: insert code here
+  for (let i = 0; i < data.length; i++) {
+    const x = posX + i * (barWidth + barGap);
+    let y = posY;
+
+    for (let j = 0; j < data[i].length; j++) {
+      const barHeight = yScale(data[i][j].value);
+      let yOffset = barHeight / 2;
+
+      y -= yOffset;
+
+      const bar = BARS[i][j];
+
+      if (changes.includes(i)) {
+        bar.fill = 'red';
+      } else {
+        bar.fill = getColor(data[i][j].category);
+      }
+
+      if (!highlights.includes(i) && (changes.length !== 0 || highlights.length !== 0)) {
+        bar.opacity = 0.25;
+      } else {
+        bar.opacity = 1;
+      }
+
+      bar.height = barHeight;
+      bar.translation.set(x, y);
+
+      y -= yOffset;
+    }
+  }
 }
