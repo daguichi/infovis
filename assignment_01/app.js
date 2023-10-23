@@ -78,32 +78,27 @@ function drawStaticStacked(two, data) {
   // Width of the chart (default: 400)
   const chartWidth = 400;
   const barWidth = (chartWidth - (data.length - 1) * barGap) / data.length;
-  // TODO: insert code here
 
   for (let i = 0; i < data.length; i++) {
-    // now the object is an array of 4 object (each object with a category and a value)
-    // each object (array of 4 elements) represents a bar
-    // the color of each object is determined by the category (getColor())
-
-    // the height of each bar is the sum of the values of the 4 objects
-    // now the code
     const x = posX + i * (barWidth + barGap);
     let y = posY;
-    console.log('en i = ' + i )
+
     for (let j = 0; j < data[i].length; j++) {
-      console.log(data[i][j])
       const barHeight = data[i][j].value * scale;
       let yOffset = barHeight / 2;
-      y += yOffset;
-      console.log('aca el y es ' + y)
+
+      y -= yOffset;
+
       const bar = two.makeRectangle(x, y, barWidth, barHeight);
+
+      y -= yOffset;
 
       bar.fill = getColor(data[i][j].category);
 
       two.add(bar);
     }
 
-    
+
   }
 
   console.log(data)
