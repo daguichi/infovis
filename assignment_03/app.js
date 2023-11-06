@@ -23,11 +23,11 @@ const blankTime = 200;
 const barTime = 2000;
 
 function getTutorialInfo() {
-    return {
-        exerciseNum: 3,  // make sure that this is the right number of the current exercise
-        groupNames: "Nikhil Bhavikatti, Athish A Yogi, Leonardo D'Agostino", // provide the names of each team member
-        isAnimated: false  // if set to true, shapes will be rendered continously
-    };
+  return {
+    exerciseNum: 3,  // make sure that this is the right number of the current exercise
+    groupNames: "Nikhil Bhavikatti, Athish A Yogi, Leonardo D'Agostino", // provide the names of each team member
+    isAnimated: true  // if set to true, shapes will be rendered continously
+  };
 }
 
 /**
@@ -50,11 +50,11 @@ function randomInt(min, maxExclusive) {
  * @returns an array
  */
 function randomArray(len, min, maxExclusive) {
-    const arr = [];
-    for (let i = 0; i < len; i++) {
-        arr.push(randomInt(min, maxExclusive));
-    }
-    return arr;
+  const arr = [];
+  for (let i = 0; i < len; i++) {
+    arr.push(randomInt(min, maxExclusive));
+  }
+  return arr;
 }
 
 /**
@@ -70,26 +70,83 @@ function randomArray(len, min, maxExclusive) {
  * @param {Number} height - drawing area height
  */
 function draw(two, width, height) {
-  let colors = getColorScale(barCount);
-  console.log(colors);
-  let x = 0;
-  let y = 0;
-  let barWidth = (width - (barCount - 1) * barGap) / barCount;
+  const barWidth = (width - (barCount - 1) * barGap) / barCount;
+  deviantBar = randomInt(0, barCount);
+  initBars();
 
-  for (let i = 0; i < barCount; i++) {
-    const barHeight = randomInt(10, height);
-    HEIGHTS.push(barHeight);
-    const rect = two.makeRectangle(x, y, barWidth, barHeight);
-    rect.fill = colors[i];
-    rect.stroke = 'null';
-    BARS.push(rect);
+  let sum = 0;
+  let phase = 2;
 
-    x += barWidth + barGap;
+  two.bind('update', function (frameCount, timeDelta) {
+    sum += timeDelta;
 
-    two.add(rect);
+    if (phase === 1 && sum >= blankTime) {
+      showOriginal();
+      sum = 0;
+      phase = 2;
+    } else if (phase === 2 && sum >= barTime) {
+      showBlank();
+      sum = 0;
+      phase = 3;
+    } else if (phase === 3 && sum >= blankTime) {
+      showDeviant();
+      sum = 0;
+      phase = 4;
+    } else if (phase === 4 && sum >= blankTime) {
+      showBlank();
+      sum = 0;
+      phase = 1;
+    }
+  });
+
+  function initBars() {
+    let colors = getColorScale(barCount);
+    let x = barWidth / 2;
+    let y = height;
+
+    for (let i = 0; i < barCount; i++) {
+      const barHeight = randomInt(10, height);
+      HEIGHTS.push(barHeight);
+      const rect = two.makeRectangle(x, y - barHeight / 2, barWidth, barHeight);
+
+      rect.fill = colors[i];
+      rect.stroke = 'null';
+
+      BARS.push(rect);
+
+      x += barWidth + barGap;
+
+      two.add(rect);
+    }
   }
 
-  console.log(HEIGHTS);
-  
-  two.update();
+  function showOriginal() {
+    for (let i = 0; i < barCount; i++) {
+      BARS[i].width = barWidth;
+      BARS[i].height = HEIGHTS[i];
+      BARS[i].y = height - HEIGHTS[i] / 2;
+    }
+  }
+
+  function showDeviant() {
+    const deviantHeight = HEIGHTS[deviantBar] + deviation;
+    BARS[deviantBar].height = deviantHeight;
+    BARS[deviantBar].y = height - deviantHeight / 2;
+    for (let i = 0; i < barCount; i++) {
+      BARS[i].width = barWidth;
+      if (i !== deviantBar) {
+        BARS[i].height = HEIGHTS[i];
+        BARS[i].y = height - HEIGHTS[i] / 2;
+      }
+    }
+  }
+
+  function showBlank() {
+    for (let i = 0; i < barCount; i++) {
+      BARS[i].width = 0;
+    }
+  }
 }
+
+
+
