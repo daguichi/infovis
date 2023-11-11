@@ -92,7 +92,7 @@ function draw(two, width, height) {
       showDeviant();
       sum = 0;
       phase = 4;
-    } else if (phase === 4 && sum >= blankTime) {
+    } else if (phase === 4 && sum >= barTime) {
       showBlank();
       sum = 0;
       phase = 1;
