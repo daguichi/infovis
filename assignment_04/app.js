@@ -54,7 +54,7 @@ function draw(two, data, width, height) {
 
   function drawNode(node, x, y, w, h, depth) {
     const rect = two.makeRectangle(x + w / 2, y + h / 2, w, h);
-    rect.fill = 'red'; // Color for non-leaf nodes
+    rect.fill = '#a8ccec';
     const label = two.makeText(node.name, x + w / 2, y + h / 2);
 
     if (node.children && node.children.length > 0) {
@@ -65,14 +65,11 @@ function draw(two, data, width, height) {
         childX += childW;
       });
     } else {
-      console.log('leaf')
-      rect.fill = 'blue'; // Color for leaf nodes
+      rect.fill = '#ff7c04'; 
     }
 
-    label.rotation = Math.PI / 2; // Rotate label
+    label.rotation = Math.PI / 2; 
   }
 
   drawNode(data, 0, 0, width, height / maxDepth, 1);
-
-  console.log('done');
 }
