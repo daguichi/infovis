@@ -1,72 +1,128 @@
 "use strict";
 
-
 function getTutorialInfo() {
   return {
     exerciseNum: 7,
-    groupNames: "Jane Doe, Max Mustermann",
+    groupNames: "Nikhil Bhavikatti, Athish A Yogi, Leonardo D'Agostino",
+  }
+}
+const quadtreeMaxDepth = 10;
+
+
+class QuadtreeNode {
+  constructor(x, y, width, height, depth) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.depth = depth;
+    this.data = [];
+    this.children = [];
   }
 }
 
-// feel free to tweak this DURING TESTING
-const quadtreeMaxDepth = 10;
-
-/**
- * Initialize the quadtree.
- *
- * @param circles: Array<Two.Circle>: The array of data to add to the quadtree.
- *                                    Each datum is a `Two.Circle` object. Its
- *                                    position is stored in its `position`
- *                                    property, which is a `Two.Vector` with an
- *                                    `x` and `y` value.
- * @param x0: number:                 left boundary
- * @param x1: number:                 right boundary
- * @param y0: number:                 upper boundary
- * @param y1: number:                 lower boundary
- *
- * @return: any:                      The quadtree root node. The shape of this
- *                                    object is up to you. This is the same
- *                                    object that will be passed to
- *                                    `getQuadtreeAreas` and
- *                                    `getClosestCircles`.
- */
 function initQuadtree(circles, x0, x1, y0, y1) {
-  // TODO:
-  return {};
+  const quadtreeRoot = new QuadtreeNode(x0, y0, x1 - x0, y1 - y0, quadtreeMaxDepth);
+
+  for (const circle of circles) {
+    insertIntoQuadtree(quadtreeRoot, circle);
+  }
+
+  return quadtreeRoot;
 }
 
-/**
- * Get all quadtree boundary squares.
- *
- * @param quadtreeRoot: any:  The root of the quadtree, as returned by
- *                            `initQuadtree`
- *
- * @return: Array<{ x0: number, x1: number, y0: number, y1: number }>:
- *                            An array of objects with the minimal and maximal
- *                            x and y values for each node of the quadtree (not
- *                            only the leaves!). The return value will be used
- *                            to draw the squares.
- */
+function insertIntoQuadtree(node, circle) {
+  if (node.children.length === 0 && node.depth < quadtreeMaxDepth) {
+    subdivideQuadtree(node);
+  }
+
+  if (node.children.length === 0 || node.depth === quadtreeMaxDepth) {
+    node.data.push(circle);
+  } else {
+    const quadrant = getQuadrant(node, circle);
+    insertIntoQuadtree(node.children[quadrant], circle);
+  }
+}
+
+function subdivideQuadtree(node) {
+  const x = node.x;
+  const y = node.y;
+  const width = node.width;
+  const height = node.height;
+
+  const newWidth = width / 2;
+  const newHeight = height / 2;
+
+  for (let i = 0; i < 4; i++) {
+    const xOffset = (i % 2 === 0) ? 0 : newWidth;
+    const yOffset = (i < 2) ? 0 : newHeight;
+
+    const child = new QuadtreeNode(x + xOffset, y + yOffset, newWidth, newHeight, node.depth + 1);
+    node.children.push(child);
+  }
+}
+
+function getQuadrant(node, circle) {
+  const midX = node.x + node.width / 2;
+  const midY = node.y + node.height / 2;
+
+  if (circle.position.x < midX) {
+    if (circle.position.y < midY) return 0;
+    else return 2;
+  } else {
+    if (circle.position.y < midY) return 1;
+    else return 3;
+  }
+}
+
+function traverseQuadtree(node) {
+  const areas = [];
+
+  if (!node) {
+    return areas;
+  }
+
+  areas.push({ x0: node.x, x1: node.x + node.width, y0: node.y, y1: node.y + node.height });
+
+  for (const child of node.children) {
+    areas.push(...traverseQuadtree(child));
+  }
+
+  return areas;
+}
+
 function getQuadtreeAreas(quadtreeRoot) {
-  return [];  // TODO:
+  const areas = traverseQuadtree(quadtreeRoot);
+
+  console.log(areas);
+  return areas;
 }
 
-/**
- * Find candidates for data (`Two.Circle` objects) within `radius` of (`x`,`y`).
- *
- * @param quadtreeRoot: any:    The root of the quadtree, as returned by
- *                              `initQuadtree`
- * @param x: number:            The x coordinate component
- * @param y: number:            The y coordinate component
- * @param radius: number:       The radius within which to return results.
- *
- * @return: Array<Two.Circle>:  An array of the data which *could be* within that
- *                              radius. Specifically, all data from all
- *                              quadtree leaves that at least partially lie
- *                              within the radius.
- */
 function quadtreeSearchAround(quadtreeRoot, x, y, radius) {
-  // TODO: implement search in quadtree
   const candidates = [];
+
+  searchQuadtree(quadtreeRoot, x, y, radius, candidates);
+
   return candidates;
+}
+
+function searchQuadtree(node, x, y, radius, candidates) {
+  const a = x - radius;
+  const b = y - radius;
+  const c = x + radius;
+  const d = y + radius;
+
+  if (node.x + node.width < a || node.x > c || node.y + node.height < b || node.y > d) {
+    return;
+  }
+
+  if (node.children.length === 0 || node.depth === quadtreeMaxDepth) {
+    for (const circle of node.data) {
+      candidates.push(circle);
+    }
+  } else {
+    for (const child of node.children) {
+      searchQuadtree(child, x, y, radius, candidates);
+    }
+  }
 }
