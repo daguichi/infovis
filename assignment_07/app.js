@@ -66,6 +66,38 @@ class QuadTree {
     }
 
   }
+
+  intersects(square) {
+    const { x0, x1, y0, y1 } = this.boundary;
+    const { x0: sx0, x1: sx1, y0: sy0, y1: sy1 } = square;
+
+    if (x0 > sx1 || x1 < sx0 || y0 > sy1 || y1 < sy0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  search(square) {
+    // const { x0, x1, y0, y1 } = this.boundary;
+    // const { x0: sx0, x1: sx1, y0: sy0, y1: sy1 } = square;
+
+    if (!this.intersects(square)) {
+      return [];
+    }
+
+    let points = [];
+
+    if (this.divided) {
+      for (let i = 0; i < this.children.length; i++) {
+        points = points.concat(this.children[i].search(square));
+      }
+    } else {
+      points = this.points;
+    }
+
+    return points;
+  }
 }
 
 /**
@@ -147,5 +179,10 @@ function getQuadtreeAreas(quadtreeRoot) {
 function quadtreeSearchAround(quadtreeRoot, x, y, radius) {
   // TODO: implement search in quadtree
   const candidates = [];
+
+  let square = { x0: x - radius, x1: x + radius, y0: y - radius, y1: y + radius };
+
+  candidates.push(...quadtreeRoot.search(square));
+
   return candidates;
 }
