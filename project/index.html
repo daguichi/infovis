@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MensaVis</title>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/d3"></script> -->
+  <script src="./d3.v7.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.11/dist/plot.umd.min.js"></script> -->
+  <script src="./plot.umd.min.js"></script>
+  <!-- if you want to compare between mensa locations, use data_all and remove data_vaihingen -->
+  <!-- <script src="./data_all.csv.js"></script> -->
+  <script src="./data_vaihingen.csv.js"></script>
+  <script src="./app.js" defer></script>
+
+  <style>
+    body {
+      padding: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: rgb(95, 86, 77);
+      font-size: 16px;
+    }
+
+    h1 {
+      color: rgb(76, 85, 87);
+      font-size: x-large;
+    }
+
+    h2 {
+      color: slategray;
+      font-size: large;
+    }
+
+    article {
+      width: 620px;
+      margin: 0 auto;
+    }
+
+    article p {
+      text-align: justify;
+    }
+
+    div.plot {
+      color: #111;
+    }
+
+    div.control {
+      text-align: center;
+    }
+
+    label {
+      display: grid;
+      align-items: center;
+      grid-template-columns: auto auto;
+    }
+
+    button {
+      border: none;
+      border-radius: 3px;
+      padding: 0.4em 0.8em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <article>
+    <section>
+
+      <!-- choose an interesting heading (but no click bait) -->
+      <h1>
+        Investigating the Mensa Menu: [Some interesting Finding Here]
+      </h1>
+
+      <h2>By [Your Names]</h2>
+
+      <!-- write your text using paragraphs, then the word count is logged to the console correctly -->
+      <p>
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+        labore et dolore
+        magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd
+        gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+        consetetur sadipscing
+        elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+        voluptua. At vero eos et
+        accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+        ipsum dolor sit
+        amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+        labore et
+        dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+        Stet clita kasd
+        gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+      </p>
+
+      <!-- place your visualization where it fits content-wise and looks good -->
+      <div class="plot" id="vis1"></div>
+      <div class="control">
+        <button onclick="togglePrice()">toogle price</button>
+      </div>
+
+
+      <div class="plot" id="vis1b"></div>
+      <div class="plot" id="vis1c"></div>
+
+      <p>
+        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum
+        dolore eu feugiat
+        nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
+        delenit augue duis
+        dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+        nonummy nibh
+        euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+      </p>
+      <p>
+        Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip
+        ex ea commodo
+        consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel
+        illum dolore eu
+        feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum
+        zzril delenit
+        augue duis dolore te feugait nulla facilisi.
+      </p>
+      <p>
+
+        Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat
+        facer possim
+        assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt
+        ut laoreet
+        dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+        suscipit
+        lobortis nisl ut aliquip ex ea commodo consequat.
+      </p>
+
+      <div class="control">
+        <label>
+          count
+          <input type="range" min="5" max="50" step="1" value="20" onchange="changeCount(this)" />
+        </label>
+      </div>
+      <div class="plot" id="vis2"></div>
+
+      <p>
+        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum
+        dolore eu feugiat
+        nulla facilisis.
+      </p>
+      <p>
+        At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+        sanctus est Lorem
+        ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+        tempor invidunt ut
+        labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
+        ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
+        amet, consetetur
+        sadipscing elitr, At accusam aliquyam diam diam dolore dolores duo eirmod eos erat, et nonumy sed tempor
+        et et invidunt
+        justo labore Stet clita ea et gubergren, kasd magna no rebum. sanctus sea sed takimata ut vero voluptua.
+        est Lorem ipsum
+        dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+        invidunt ut
+        labore et dolore magna aliquyam erat.
+      </p>
+      <p>
+        Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+        erat, sed diam
+        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+        takimata sanctus
+        est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        eirmod tempor
+        invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo
+        dolores et ea
+        rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
+        dolor sit amet,
+        consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+        erat, sed diam
+        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+        takimata sanctus.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+        labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
+        ea rebum. Stet clita kasd gubergren.
+      </p>
+    </section>
+
+  </article>
+
+</body>
+
+</html>

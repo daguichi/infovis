@@ -9,7 +9,7 @@ function getTutorialInfo() {
 }
 
 // feel free to tweak this DURING TESTING
-const quadtreeMaxDepth = 7;
+const quadtreeMaxDepth = 10;
 
 // (a) (4 points) Implement initQuadtree.
 // This function receives the data points (in the form of Two.Circle objects) and the bounds of the area. You should implement its body so that it returns the quadtree data structure (i.e., its root node). The exact implementation and shape of the quadtree data structure is up to you. It will be passed, as you return it here, to the other two functions as a parameter so that you can use it there.

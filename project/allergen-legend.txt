@@ -1,0 +1,49 @@
+ALLERGENE
+(Ei) Ei
+(En) Erdnuss
+(Fi) Fisch
+(GlD) Dinkel
+(GlG) Gerste
+(GlH) Hafer
+(GlKW) Khorasan-Weizen
+(GlR) Roggen
+(GlW) Weizen
+(Kr) Krebstiere (Krusten- und Schalentiere)
+(La) Milch und Laktose
+(Lu) Lupine
+(NuC) Cashewnüsse
+(NuH) Haselnüsse
+(NuM) Mandeln
+(NuMa) Macadamianüsse
+(NuPa) Paranüsse
+(NuPe) Pecannüsse
+(NuPi) Pistazien
+(NuW) Walnüsse
+(Se) Sesam
+(Sf) Senf
+(Sl) Sellerie
+(So) Soja
+(Sw) Schwefeldioxid ("SO2") und Sulfite (> 10mg/kg oder 10mg/l, als SO2)
+(Wt) Weichtiere
+
+ZUSATZSTOFFE
+(1) mit Konservierungsstoff
+(2) mit Farbstoff
+(3) mit Antioxidationsmittel
+(4) mit Geschmacksverstärker
+(5) geschwefelt
+(6) gewachst
+(7) mit Phosphat
+(8) mit Süßungsmittel
+(9) enthält eine Phenylalaninquelle
+(10) geschwärzt
+(11) mit Alkohol
+(12) mit Nitritpökelsalz
+(13) mit Nitrat
+(14) kann Aktivität und Aufmerksamkeit bei Kindern beeinträchtigen
+
+WEITERE ANGABEN
+(30) aus Fleischstücken zusammengefügt
+(31) aus Fischstücken zusammengefügt
+(GeR) enthält Rindergelatine
+(Ges) enthält Schweinegelatine
